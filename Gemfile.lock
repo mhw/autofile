@@ -4,9 +4,11 @@ GEM
     classifier (1.3.3)
       fast-stemmer (>= 1.0.0)
     fast-stemmer (1.0.0)
+    madeleine (0.7.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   classifier
+  madeleine
