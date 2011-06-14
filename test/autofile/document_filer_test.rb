@@ -4,7 +4,7 @@ require 'tmpdir'
 
 class DocumentFilerTest < Test::Unit::TestCase
   def tmp_dir
-    @tmp_dir ||= Dir.tmpdir
+    @tmp_dir ||= File.join(Dir.tmpdir, "autofile-test-#{Process.pid}")
   end
 
   def home_dir
