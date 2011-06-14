@@ -15,7 +15,19 @@ module AutoFile
     end
 
     def add(directory, file)
+      directory = directory.dup
+      directory.extend PlainCategoryName
       classifier.add_category(directory) unless classifier.categories.include?(directory)
+    end
+
+    def categories
+      classifier.categories
+    end
+
+    module PlainCategoryName
+      def prepare_category_name
+        to_s.intern
+      end
     end
 
     private
@@ -25,6 +37,10 @@ module AutoFile
 
       def storage
         File.join(@storage_dir, 'classifier')
+      end
+
+      def classifier
+        @storage.system
       end
 
       def words(file)

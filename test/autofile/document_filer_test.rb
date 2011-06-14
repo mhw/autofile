@@ -11,6 +11,10 @@ class DocumentFilerTest < Test::Unit::TestCase
     File.expand_path('~')
   end
 
+  def fixture_dir(name)
+    File.join('fixtures', name)
+  end
+
   attr_accessor :filer
 
   def new_filer
@@ -39,5 +43,10 @@ class DocumentFilerBehaviourTest < DocumentFilerTest
 
   def test_overridden_storage_dir
     assert_equal tmp_dir, filer.storage_dir
+  end
+
+  def test_should_add_directories_as_categories
+    filer.add(fixture_dir('leeds'), 'statement_1.txt')
+    assert filer.categories.include?(fixture_dir('leeds'))
   end
 end
