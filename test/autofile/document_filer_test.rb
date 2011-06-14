@@ -19,6 +19,7 @@ class DocumentFilerTest < Test::Unit::TestCase
 
   def teardown
     FileUtils.rm_rf tmp_dir
+    super
   end
 
   def test_storage_persists
@@ -28,6 +29,7 @@ end
 
 class DocumentFilerBehaviourTest < DocumentFilerTest
   def setup
+    super
     new_filer
   end
 
