@@ -11,7 +11,7 @@ class DocumentFilerTest < Test::Unit::TestCase
     File.expand_path('~')
   end
 
-  def fixture_dir(name)
+  def fixture(name)
     File.join('fixtures', name)
   end
 
@@ -46,7 +46,14 @@ class DocumentFilerBehaviourTest < DocumentFilerTest
   end
 
   def test_should_add_directories_as_categories
-    filer.add(fixture_dir('leeds'), 'statement_1.txt')
-    assert filer.categories.include?(fixture_dir('leeds'))
+    filer.add(fixture('leeds'), 'statement_1.txt')
+    assert filer.categories.include?(fixture('leeds'))
+  end
+
+  def test_should_classify_document
+    2.times { |i| filer.add(fixture('leeds'), "statement_#{i+1}.txt") }
+    3.times { |i| filer.add(fixture('york'), "statement_#{i+1}.txt") }
+    assert_equal fixture('leeds'), filer.directory_for(fixture('incoming/leeds_statement.txt'))
+    assert_equal fixture('york'), filer.directory_for(fixture('incoming/york_statement.txt'))
   end
 end

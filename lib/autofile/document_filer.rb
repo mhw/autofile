@@ -18,10 +18,15 @@ module AutoFile
       directory = directory.dup
       directory.extend PlainCategoryName
       classifier.add_category(directory) unless classifier.categories.include?(directory)
+      classifier.train(directory, words(directory, file))
     end
 
     def categories
       classifier.categories
+    end
+
+    def directory_for(path)
+      classifier.classify(words(path)).to_s
     end
 
     module PlainCategoryName
@@ -43,8 +48,14 @@ module AutoFile
         @storage.system
       end
 
-      def words(file)
-        `pdftotext "#{file}" -`
+      def words(directory_or_path, file = nil)
+        path = file ? File.join(directory_or_path, file) : directory_or_path
+        case File.extname(path)
+        when '.txt'
+          File.read(path)
+        when '.pdf'
+          `pdftotext "#{path}" -`
+        end
       end
   end
 end
