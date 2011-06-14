@@ -14,6 +14,10 @@ module AutoFile
       }
     end
 
+    def save
+      @storage.take_snapshot
+    end
+
     def add(directory, file)
       directory = directory.dup
       directory.extend PlainCategoryName

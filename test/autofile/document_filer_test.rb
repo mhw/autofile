@@ -21,13 +21,33 @@ class DocumentFilerTest < Test::Unit::TestCase
     @filer = AutoFile::DocumentFiler.new(tmp_dir)
   end
 
+  def close_filer
+    @filer.save
+    @filer = nil
+  end
+
   def teardown
     FileUtils.rm_rf tmp_dir
     super
   end
 
+  def add_known_documents
+    2.times { |i| filer.add(fixture('leeds'), "statement_#{i+1}.txt") }
+    3.times { |i| filer.add(fixture('york'), "statement_#{i+1}.txt") }
+  end
+
+  def assert_match_unknown_documents
+    assert_equal fixture('leeds'), filer.directory_for(fixture('incoming/leeds_statement.txt'))
+    assert_equal fixture('york'), filer.directory_for(fixture('incoming/york_statement.txt'))
+  end
+
   def test_storage_persists
     new_filer
+    add_known_documents
+    close_filer
+
+    new_filer
+    assert_match_unknown_documents
   end
 end
 
@@ -51,9 +71,7 @@ class DocumentFilerBehaviourTest < DocumentFilerTest
   end
 
   def test_should_classify_document
-    2.times { |i| filer.add(fixture('leeds'), "statement_#{i+1}.txt") }
-    3.times { |i| filer.add(fixture('york'), "statement_#{i+1}.txt") }
-    assert_equal fixture('leeds'), filer.directory_for(fixture('incoming/leeds_statement.txt'))
-    assert_equal fixture('york'), filer.directory_for(fixture('incoming/york_statement.txt'))
+    add_known_documents
+    assert_match_unknown_documents
   end
 end
