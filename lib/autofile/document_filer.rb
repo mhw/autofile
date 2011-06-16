@@ -36,6 +36,13 @@ module AutoFile
       classifier.classify(words).to_s if words
     end
 
+    def directories_for(path)
+      if words = words(path)
+        scores = classifier.classifications(words)
+        scores.sort_by { |category, score| -score }.map { |category, score| category }
+      end
+    end
+
     module PlainCategoryName
       def prepare_category_name
         to_s.intern

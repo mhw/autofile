@@ -84,4 +84,10 @@ class DocumentFilerBehaviourTest < DocumentFilerTest
     add_known_documents
     assert_nil filer.directory_for(fixture('leeds/unknown.extension'))
   end
+
+  def test_should_provide_ranked_classifications_for_document
+    add_known_documents
+    suggestions = filer.directories_for(fixture('incoming/leeds_statement.txt'))
+    assert_equal [fixture('leeds'), fixture('york')], suggestions
+  end
 end
