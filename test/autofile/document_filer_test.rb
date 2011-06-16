@@ -70,6 +70,11 @@ class DocumentFilerBehaviourTest < DocumentFilerTest
     assert filer.categories.include?(fixture('leeds'))
   end
 
+  def test_should_not_add_category_for_unknown_file_types
+    filer.add(fixture('leeds'), 'unknown.extension')
+    assert !filer.categories.include?(fixture('leeds'))
+  end
+
   def test_should_classify_document
     add_known_documents
     assert_match_unknown_documents

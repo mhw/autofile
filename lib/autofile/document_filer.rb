@@ -21,8 +21,10 @@ module AutoFile
     def add(directory, file)
       directory = directory.dup
       directory.extend PlainCategoryName
-      classifier.add_category(directory) unless classifier.categories.include?(directory)
-      classifier.train(directory, words(directory, file))
+      if words = words(directory, file)
+        classifier.add_category(directory) unless classifier.categories.include?(directory)
+        classifier.train(directory, words)
+      end
     end
 
     def categories
