@@ -79,4 +79,9 @@ class DocumentFilerBehaviourTest < DocumentFilerTest
     add_known_documents
     assert_match_unknown_documents
   end
+
+  def test_should_not_classify_unknown_file_types
+    add_known_documents
+    assert_nil filer.directory_for(fixture('leeds/unknown.extension'))
+  end
 end

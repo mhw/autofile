@@ -32,7 +32,8 @@ module AutoFile
     end
 
     def directory_for(path)
-      classifier.classify(words(path)).to_s
+      words = words(path)
+      classifier.classify(words).to_s if words
     end
 
     module PlainCategoryName
